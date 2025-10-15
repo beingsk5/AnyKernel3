@@ -54,6 +54,20 @@ dump_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_b
 # backup_file init.rc;
 # replace_string init.rc "cpuctl cpu,timer_slack" "mount cgroup none /dev/cpuctl cpu" "mount cgroup none /dev/cpuctl cpu,timer_slack";
 
+# === Begin: Custom code to copy init.d and modify init.rc ===
+if [ -d ./init.d ]; then
+    mkdir -p $RAMDISK/init.d
+    cp -rv ./init.d/* $RAMDISK/init.d/
+    chmod -R 755 $RAMDISK/init.d
+fi
+
+if ! grep -q 'exec /init.d/99loadmodules' $RAMDISK/init.rc; then
+    echo -e '
+on post-fs-data
+    exec /init.d/99loadmodules' >> $RAMDISK/init.rc
+fi
+# === End: Custom code ===
+
 # # init.tuna.rc
 # backup_file init.tuna.rc;
 # insert_line init.tuna.rc "nodiratime barrier=0" after "mount_all /fstab.tuna" "\tmount ext4 /dev/block/platform/omap/omap_hsmmc.0/by-name/userdata /data remount nosuid nodev noatime nodiratime barrier=0";
