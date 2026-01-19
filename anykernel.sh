@@ -4,8 +4,8 @@
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=RagnaR-Kernel by beingsk5
-kernel.made=beingsk5
+kernel.string=RagnaR-Kernel by RagnaR
+kernel.made=RagnaR-Kernel
 message.word=Thank you for installing RagnaR-Kernel !
 do.devicecheck=1
 do.modules=1
@@ -49,8 +49,6 @@ patch_vbmeta_flag=auto;
 
 # boot install
 dump_boot; # use split_boot to skip ramdisk unpack, e.g. for devices with init_boot ramdisk
-
-do_modules;   # copy and install kernel modules from /modules in the zip to device
 
 # init.rc
 # backup_file init.rc;
